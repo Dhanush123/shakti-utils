@@ -1,10 +1,8 @@
-# from shakti.constants import GCS_BUCKET_NAME
-
 from google.cloud import storage
 import os
 
 from shaktiutils.utilities import name_from_path
-import shakti
+from shaktiutils.constants import GCS_BUCKET_NAME
 
 
 def gcs_file_upload(file_path, file_type):
@@ -15,7 +13,7 @@ def gcs_file_upload(file_path, file_type):
 
     storage_client = storage.Client()
 
-    bucket = storage_client.bucket(os.environ["GCS_BUCKET_NAME"])
+    bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
     try:
         # source and destination file name are kept same
         file_name = name_from_path(file_path)
@@ -23,7 +21,7 @@ def gcs_file_upload(file_path, file_type):
         blob.upload_from_filename(file_path)
         print("File {} has been uploaded".format(file_name))
     except NameError:
-        print("Please set the environment variable {}".format("GCS_BUCKET_NAME"))
+        print("Please set the environment variable {}".format(GCS_BUCKET_NAME))
 
 
 def gcs_list_files(prefix, delimiter=None):
