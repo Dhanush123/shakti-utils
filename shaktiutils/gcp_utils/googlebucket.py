@@ -1,8 +1,9 @@
 from google.cloud import storage
 import os
 
-from shaktiutils.utilities import name_from_path
+from shaktiutils.utilities import file_from_path
 from shaktiutils.constants import GCS_BUCKET_NAME
+from dotenv import load_dotenv
 
 
 def gcs_file_upload(file_path, file_type):
@@ -16,7 +17,8 @@ def gcs_file_upload(file_path, file_type):
     bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
     try:
         # source and destination file name are kept same
-        file_name = name_from_path(file_path)
+        load_dotenv()
+        file_name = file_from_path(file_path)
         blob = bucket.blob(file_type+"/"+file_name)
         blob.upload_from_filename(file_path)
         print("File {} has been uploaded".format(file_name))
@@ -51,7 +53,7 @@ def gcs_list_files(prefix, delimiter=None):
     """
     # Note: Client.list_blobs requires at least package version 1.17.0.
     # https://cloud.google.com/storage/docs/listing-objects
-
+    load_dotenv()
     storage_client = storage.Client()
     bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
 
@@ -73,10 +75,13 @@ def gcs_download_file(source_file_path):
     # destination_file_name = "local/path/to/file"
 
     try:
+        load_dotenv()
         storage_client = storage.Client()
         bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
         blob = bucket.blob(source_file_path)
-        destination_file_name = "/"+source_file_path
+        model_file_name = source_file_path.rsplit('/', 1)
+        # current will only download to current directory
+        destination_file_name = os.getcwd()+"/"+model_file_name
         blob.download_to_filename(destination_file_name)
 
         print(
