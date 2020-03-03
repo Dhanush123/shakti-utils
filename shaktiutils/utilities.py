@@ -1,5 +1,6 @@
 import ntpath
 import subprocess
+import re
 
 
 def file_from_path(path):
@@ -15,3 +16,8 @@ def run_bash_cmd(cmd):
     # process.wait()
     output, error = process.communicate()
     return output, error
+
+
+def filter_alpha(string):
+    regex = re.compile('[^a-zA-Z]')
+    return regex.sub('', string)
