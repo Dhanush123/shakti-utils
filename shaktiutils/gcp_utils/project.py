@@ -11,6 +11,6 @@ def gcp_setproject():
     error = error.decode(
         "utf-8") if error else error
     project_id = os.environ[PROJECT_ID]
-    if not output.find(project_id) or error:
+    if output.find(project_id) == -1 or error:
         config_cmd = "gcloud config set project {}".format(project_id)
         run_bash_cmd(config_cmd)
