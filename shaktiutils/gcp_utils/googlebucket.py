@@ -3,9 +3,9 @@ import os
 from os.path import join, dirname
 from pathlib import Path
 
-from shaktiutils.utilities import file_from_path
-from shaktiutils.constants import GCS_BUCKET_NAME
-from shaktiutils.gcp_utils.auth import get_env_creds
+from shakti.utils.utilities import file_from_path
+from shakti.utils.constants import GCS_BUCKET_NAME
+from shakti.utils.gcp.auth import get_env_creds
 
 
 def gcs_file_upload(file_path, file_type):

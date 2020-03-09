@@ -1,11 +1,11 @@
 import os
 
 from shaktiutils.utilities import run_bash_cmd
+from shaktiutils.constants import PROJECT_ID
 from dotenv import load_dotenv, find_dotenv
 
 
 def gcp_auth():
-
     try:
         auth_list_cmd = "gcloud auth list"
         auth_output, auth_error = run_bash_cmd(auth_list_cmd)
@@ -18,6 +18,19 @@ def gcp_auth():
             login_output, login_error = run_bash_cmd(login_cmd)
     except:
         raise
+
+
+def gcp_setproject():
+    list_cmd = "gcloud projects list"
+    output, error = run_bash_cmd(list_cmd)
+    output = output.decode(
+        "utf-8") if output else output
+    error = error.decode(
+        "utf-8") if error else error
+    project_id = os.environ[PROJECT_ID]
+    if output.find(project_id) == -1 or error:
+        config_cmd = "gcloud config set project {}".format(project_id)
+        run_bash_cmd(config_cmd)
 
 
 def get_env_creds():
