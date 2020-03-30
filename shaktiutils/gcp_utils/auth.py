@@ -1,7 +1,7 @@
 import os
 
-from shaktiutils.utilities import run_bash_cmd
-from shaktiutils.constants import PROJECT_ID
+from shakti.utils.utilities import run_bash_cmd
+from shakti.utils.constants import PROJECT_ID
 from dotenv import load_dotenv, find_dotenv
 
 
